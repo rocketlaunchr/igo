@@ -12,24 +12,42 @@ type tocall struct {
 	goroutine bool // Run in goroutine or not
 }
 
-// Stack is LIFO stack that stores closures.
+// Stack is used to stores closures in order.
 type Stack struct {
+	lifo bool
 	sync.Mutex
 	stack []tocall
 }
 
 // NewStack creates a new Stack.
-func NewStack() *Stack {
+// lifo will make the stack operate in "LIFO" mode.
+// Otherwise it will operate in "FIFO" mode.
+// For fordefer, LIFO is required.
+func NewStack(lifo bool, capacity ...int) *Stack {
+	c := 1
+	if len(capacity) > 0 {
+		c = capacity[0]
+	}
+
 	return &Stack{
-		stack: []tocall{},
+		lifo:  lifo,
+		stack: make([]tocall, 0, c),
 	}
 }
 
-// Prepend inserts a closure to the beginning of the stack.
-// Prepend is required for the stack to operate in LIFO mode.
-func (s *Stack) Prepend(goroutine bool, fn interface{}) {
+// Add inserts a closure to the stack.
+func (s *Stack) Add(goroutine bool, fn interface{}) {
 	s.Lock()
 	defer s.Unlock()
+
+	if s.lifo {
+		s.prepend(goroutine, fn)
+	} else {
+		s.append(goroutine, fn)
+	}
+}
+
+func (s *Stack) prepend(goroutine bool, fn interface{}) {
 
 	tc := tocall{
 		fn:        fn,
@@ -39,10 +57,7 @@ func (s *Stack) Prepend(goroutine bool, fn interface{}) {
 	s.stack = append([]tocall{tc}, s.stack...)
 }
 
-// Append inserts a closure to the end of the stack.
-func (s *Stack) Append(goroutine bool, fn interface{}) {
-	s.Lock()
-	defer s.Unlock()
+func (s *Stack) append(goroutine bool, fn interface{}) {
 
 	tc := tocall{
 		fn:        fn,
