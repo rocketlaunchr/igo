@@ -1,6 +1,6 @@
 // Copyright 2018 PJ Engineering and Business Solutions Pty. Ltd. All rights reserved.
 
-package fordefer
+package stack
 
 import (
 	"reflect"
@@ -34,6 +34,9 @@ func NewStack(lifo bool, capacity ...int) *Stack {
 		stack: make([]tocall, 0, c),
 	}
 }
+
+// TODO: Always insert to end of the stack
+// but loop from either end (more efficient)
 
 // Add inserts a closure to the stack.
 func (s *Stack) Add(goroutine bool, fn interface{}) {
