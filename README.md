@@ -129,13 +129,13 @@ Pull-Requests are requested for the below deficiencies.
 
 * For `fordefer`: `goto` statements inside a for-loop that jump outside the for-loop is not implemented. Use `github.com/rocketlaunchr/igo/stack` package manually in such cases.
 * Currently comments in your igo files are not retained in your go files. Godoc will not see your comments.
-* `igofmt -s` Simplified mode is not implemented. (See here for instructions)[https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15].
+* `igofmt -s` Simplified mode is not implemented. [See here for instructions](https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15).
 * `goimports` equivalent has not been made.
-* Address Operator for integer constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using (go/types)[https://github.com/golang/example/tree/master/gotypes] package.
+* Address Operator for integer constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using [go/types](https://github.com/golang/example/tree/master/gotypes) package.
 * Address Operator feature assumes you have not attempted to redefine `true` and `false` to something/anything else (they are not keywords in Go language).
 	* Why would you redefine them anyway?
 
-## Tips
+## Tips & Advice
 
 * Store the `igo` and generated `go` files in your git repository.
 
