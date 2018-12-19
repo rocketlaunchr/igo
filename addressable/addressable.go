@@ -71,6 +71,8 @@ func pre(c *astutil.Cursor) bool {
 				if currentBlock := encounteredBlocks.current(); currentBlock != nil {
 					varName := insertCallExpr(currentBlock.node, *currentBlock.current, t)
 					n.X = replaceX(varName)
+					// Add 1 to current
+					currentBlock.current = &[]int{*currentBlock.current + 1}[0]
 				}
 			case *ast.BasicLit:
 				switch t.Kind {
@@ -82,6 +84,8 @@ func pre(c *astutil.Cursor) bool {
 					if currentBlock := encounteredBlocks.current(); currentBlock != nil {
 						varName := insertConstVar(currentBlock.node, t.Kind, *currentBlock.current, t.Value)
 						n.X = replaceX(varName)
+						// Add 1 to current
+						currentBlock.current = &[]int{*currentBlock.current + 1}[0]
 					}
 				}
 			}
