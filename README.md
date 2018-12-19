@@ -1,43 +1,42 @@
 Improved Go (igo)
 ===============
 
-Facebook's React is one of the most dominant libraries for front-end development around. Google's Go programming language is one of the most elegantly crafted languages for server development. Why not combine the two?
+Everyone knows that Go is a very verbose language. It takes numerous lines of code to do what a few lines of code can do in other languages. This is a deliberate design decision by the Go Authors.
 
-This package is an extremely thin wrapper over the native react.js API. The objective was to make it light-weight, developer-friendly and intuitive. You shouldn’t have to scour the documentation to get going — a few peeks should be adequate. If you know your way around the React API and you know a bit of Go, then you should be able to make prototypes and production-worthy applications in no time. 
+The igo project provides various syntactical sugar to make your code simpler and easier to read. It works by allowing you to program in `*.igo` files with the fancy new syntax. You then run `igo build` to transpile your `igo` files to standard `go` files which you can build as per normal.
 
-The package is **production ready** but it should be noted that the `elements` sub-package is not stable yet. Once stability is reached, version `1.0.0` will be tagged. The `elements` sub-package is optional but highly convenient.
-It is recommended your package manager locks to a commit id instead of the master branch directly.
+1. Address Operator
+    * Constants and Functions
+2. Defers for for loops
+    * `fordefer` guarantees to run prior to the loop's current iteration exiting.
+3. Defer go
+    * Run defer statements in a goroutine
+  
+This tool is an **experimental** is still at alpha stage.
 
-See [Tutorial here](https://medium.com/@rocketlaunchr.cloud/go-with-react-de5ee4f01df9).
 
-## Dependencies
+## What is included
 
-* [React 16.5.2](https://www.npmjs.com/package/react) (it will probably work with lower)
-* [Gopherjs](https://github.com/gopherjs/gopherjs)
-* [create-react-class](https://www.npmjs.com/package/create-react-class)
+* igofmt
+* igo compiler
 
 ## Installation
 
+**Transpiler**
+
 ```
-go get -u github.com/rocketlaunchr/react
+go get -u github.com/rocketlaunchr/igo
 ```
 
-## Examples
+**Formatter**
 
-The examples can be [found here](https://github.com/rocketlaunchr/react/tree/master/examples):
-### Uptime Timer
+```
+go get -u github.com/rocketlaunchr/igo/igofmt
+```
 
-* How to create React class components
-* How to pass props from parent to child
-* How to use **HydrateProps()** and **HydrateState()**
-* How to use **state()** and **setState()**
-* How to create strongly-typed structured props and states
+## Inspiration
 
-### Event Handling
-
-* How to create React functional components
-* How to handle events (and pass extra arguments)
-* How to create a Ref and interact with dom object directly
+Most professional front-end developers are fed up with standard JavaScript. They program using Typescript and then tranpile the code to standard ES5 JavaScript. igo adds the same step to the build process.
 
 ## Performance Tips
 
