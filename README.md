@@ -36,7 +36,7 @@ go get -u github.com/rocketlaunchr/igo/igofmt
 
 ## Inspiration
 
-Most professional front-end developers are fed up with standard JavaScript. They program using Typescript and then tranpile the code to standard ES5 JavaScript. igo adds the same step to the build process.
+Most professional front-end developers are fed up with standard JavaScript. They program using Typescript and then transpile the code to standard ES5 JavaScript. igo adds the same step to the build process.
 
 ## Examples
 
@@ -77,19 +77,53 @@ See https://blog.learngoprogramming.com/gotchas-of-defer-in-go-1-8d070894cb01 on
 
 ```go
 
-	for {
-		row, err := db.Query("SELECT ...")
-		if err != nil {
-			panic(err)
-		}
-
-		fordefer row.Close()
+for {
+	row, err := db.Query("SELECT ...")
+	if err != nil {
+		panic(err)
 	}
+
+	fordefer row.Close()
+}
 
 ```
 
 
 ### Defer go
+
+```go
+
+mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+	start := time.Now()
+	// Transmit how long request took to serve without delaying response to client.
+	defer go transmitRequestStats(start)
+
+	fmt.Fprintf(w, "Welcome to the home page!")
+})
+
+```
+
+## How to use
+
+### Transpile
+
+`igo` can accept numerous directories or igo files. The generated go files are saved alongside the igo files.
+
+```
+igo build [igo files...]
+```
+
+### Format Code
+
+`igofmt` will format your code to the standard form. It understands igo syntax.
+
+```
+igofmt [-s] [igo files...]
+```
+
+Configure your IDE to run `igofmt` upon saving a `*.igo` file.
+
+## Design Decisions and Limitations
 
 
 
