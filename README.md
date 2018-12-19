@@ -7,7 +7,7 @@ The igo project provides various syntactical sugar to make your code simpler and
 
 1. Address Operator
     * Constants and Functions
-2. Defers for for loops
+2. Defers for for-loops
     * `fordefer` guarantees to run prior to the loop's current iteration exiting.
 3. Defer go
     * Run defer statements in a goroutine
@@ -95,7 +95,7 @@ for {
 
 mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 	start := time.Now()
-	// Transmit how long request took to serve without delaying response to client.
+	// Transmit how long the request took to serve without delaying response to client.
 	defer go transmitRequestStats(start)
 
 	fmt.Fprintf(w, "Welcome to the home page!")
@@ -125,6 +125,19 @@ Configure your IDE to run `igofmt` upon saving a `*.igo` file.
 
 ## Design Decisions and Limitations
 
+Pull-Requests are requested for the below deficiencies.
+
+* For `fordefer`: `goto` statements inside a for-loop that jump outside the for-loop is not implemented. Use `github.com/rocketlaunchr/igo/stack` package manually in such cases.
+* Currently comments in your igo files are not retained in your go files. Godoc will not see your comments.
+* `igofmt -s` Simplified mode is not implemented. (See here for instructions)[https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15].
+* `goimports` equivalent has not been made.
+* Address Operator for integer constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using (go/types)[https://github.com/golang/example/tree/master/gotypes] package.
+* Address Operator feature assumes you have not attempted to redefine `true` and `false` to something/anything else (they are not keywords in Go language).
+	* Why would you redefine them anyway?
+
+## Tips
+
+* Store the `igo` and generated `go` files in your git repository.
 
 
 #
