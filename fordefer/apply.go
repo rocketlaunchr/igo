@@ -134,8 +134,6 @@ func pre(forFound *bool) func(c *astutil.Cursor) bool {
 				}
 
 			}
-		default:
-			_ = n
 		}
 
 		return true

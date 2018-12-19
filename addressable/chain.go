@@ -6,10 +6,26 @@ import (
 	"go/ast"
 )
 
-type blocks []*ast.BlockStmt
+type block struct {
+	node    *ast.BlockStmt
+	lookup  map[ast.Stmt]int // Maps each stmt in the block to its index
+	current *int             // signifies which stmt in block we are walking through at the moment
+}
+
+type blocks []block
 
 func (b *blocks) add(bs *ast.BlockStmt) {
-	*b = append(*b, bs)
+
+	bl := block{
+		node:   bs,
+		lookup: map[ast.Stmt]int{},
+	}
+
+	for i, v := range bs.List {
+		bl.lookup[v] = i
+	}
+
+	*b = append(*b, bl)
 }
 
 func (b *blocks) remove() {
@@ -18,7 +34,7 @@ func (b *blocks) remove() {
 	}
 }
 
-func (b *blocks) current() *ast.BlockStmt {
+func (b *blocks) current() *block {
 	if len(*b) == 0 {
 		return nil
 	}
