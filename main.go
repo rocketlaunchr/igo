@@ -6,10 +6,6 @@ import (
 	"fmt"
 	"os"
 
-	// "go/parser"
-	// "log"
-
-	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
 
 	"github.com/rocketlaunchr/igo/cmds"
@@ -30,29 +26,6 @@ func init() {
 }
 
 func main() {
-
-	spew := spew.NewDefaultConfig()
-	spew.ContinueOnMethod = true
-	spew.Indent = "  "
-
-	// Commit then remove!
-
-	// code := `
-
-	// 	&[]bool{true}[0]
-
-	// `
-
-	// ast, err := parser.ParseExpr(code)
-	// if err != nil {
-	// 	log.Fatal(spew.Sdump(err))
-	// }
-
-	// fmt.Println(spew.Sdump(ast))
-
-	// return
-
-	////////////////////////////////////////////////
 
 	var rootCmd = &cobra.Command{
 		Use: "igo",
