@@ -11,18 +11,11 @@ import (
 	"github.com/rocketlaunchr/igo/cmds"
 )
 
-// These are the files we want to transpile
-var sourceFiles []string
-
 // tempGeneratedFiles maps the actual source file to the temporary generated file
 var tempGeneratedFiles map[string]string
 
 func init() {
 	tempGeneratedFiles = make(map[string]string)
-
-	sourceFiles = []string{
-		"test/main.igo",
-	}
 }
 
 func main() {
