@@ -51,8 +51,7 @@ func main() {
    
 	display(&`inline string`)
 
-	def := &defaultMessage()
-	display(def)
+	display(&defaultMessage())
 
 }
 
