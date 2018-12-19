@@ -5,7 +5,7 @@ Everyone knows that Go is a very verbose language. It takes numerous lines of co
 
 The igo project provides various syntactical sugar to make your code simpler and easier to read. It works by allowing you to program in `*.igo` files with the fancy new syntax. You then run `igo build` to transpile your `igo` files to standard `go` files which you can then build as per normal.
 
-1. Address Operator
+1. Address Operator (&)
     * Constants and Functions
 2. Defers for for-loops
     * `fordefer` guarantees to run prior to the loop's current iteration exiting.
