@@ -128,7 +128,7 @@ Configure your IDE to run `igofmt` upon saving a `*.igo` file.
 Pull-Requests are requested for the below deficiencies.
 
 * For `fordefer`: `goto` statements inside a for-loop that jump outside the for-loop is not implemented. Use `github.com/rocketlaunchr/igo/stack` package manually in such cases.
-* Currently comments in your igo files are not retained in your go files. Godoc will not see your comments.
+* Currently, comments in your igo files are not retained in your go files. Godoc will not see your comments.
 * `igofmt -s` Simplified mode is not implemented. [See here for instructions](https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15).
 * `goimports` equivalent has not been made.
 * Address Operator for integer constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using [go/types](https://github.com/golang/example/tree/master/gotypes) package.
@@ -139,12 +139,11 @@ Pull-Requests are requested for the below deficiencies.
 
 * Store the `igo` and generated `go` files in your git repository.
 
-
 #
 
 ### Legal Information
 
-The license is a modified MIT license. Refer to `LICENSE` file for more details.
+The license is a modified MIT license. Refer to the `LICENSE` file for more details.
 
 **© 2018 PJ Engineering and Business Solutions Pty. Ltd.**
 
