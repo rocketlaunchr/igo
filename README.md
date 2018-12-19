@@ -12,7 +12,7 @@ The igo project provides various syntactical sugar to make your code simpler and
 3. Defer go
     * Run defer statements in a goroutine
   
-This tool is an **experimental** and still at alpha stage.
+This tool is **experimental** and still at alpha stage.
 
 
 ## What is included
@@ -73,7 +73,20 @@ func defaultMessage() string {
 
 ### Fordefer
 
+See https://blog.learngoprogramming.com/gotchas-of-defer-in-go-1-8d070894cb01 on why this is an improvement.
 
+```go
+
+	for {
+		row, err := db.Query("SELECT ...")
+		if err != nil {
+			panic(err)
+		}
+
+		fordefer row.Close()
+	}
+
+```
 
 
 ### Defer go
