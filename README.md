@@ -12,7 +12,7 @@ The igo project provides various syntactical sugar to make your code simpler and
 3. Defer go
     * Run defer statements in a goroutine
   
-This tool is **experimental** and still at alpha stage.
+This tool is **experimental** and still at **alpha** stage.
 
 
 ## What is included
@@ -28,6 +28,8 @@ This tool is **experimental** and still at alpha stage.
 go get -u github.com/rocketlaunchr/igo
 ```
 
+Use `go install` to install the executable. 
+
 **Formatter**
 
 ```
@@ -41,6 +43,9 @@ Most professional front-end developers are fed up with standard JavaScript. They
 ## Examples
 
 ### Address Operator
+
+The Address Operator allows you to use more visually pleasing syntax. There is no need for a temporary variable. It can be used with `string`, `bool`, `int`, `float64` and function calls where the function returns 1 return value.
+
 
 ```go
 
@@ -72,7 +77,7 @@ func defaultMessage() string {
 
 ### Fordefer
 
-See https://blog.learngoprogramming.com/gotchas-of-defer-in-go-1-8d070894cb01 on why this is an improvement.
+See [Blog post](https://blog.learngoprogramming.com/gotchas-of-defer-in-go-1-8d070894cb01) on why this is an improvement.
 
 ```go
 
@@ -89,6 +94,8 @@ for {
 
 
 ### Defer go
+
+This feature makes Go's language more internally consistent. There is no reason why `defer` and `go` should not work together.
 
 ```go
 
