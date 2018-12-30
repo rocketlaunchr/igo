@@ -77,7 +77,7 @@ func defaultMessage() string {
 
 ### Fordefer
 
-See [Blog post](https://blog.learngoprogramming.com/gotchas-of-defer-in-go-1-8d070894cb01) on why this is an improvement.
+See [Blog post](https://blog.learngoprogramming.com/gotchas-of-defer-in-go-1-8d070894cb01) on why this is an improvement. It can be especially helpful in unit tests.
 
 ```go
 
@@ -95,7 +95,7 @@ for {
 
 ### Defer go
 
-This feature makes Go's language more internally consistent. There is no reason why `defer` and `go` should not work together.
+This feature makes Go's language syntax more internally consistent. There is no reason why `defer` and `go` should not work together.
 
 ```go
 
@@ -134,11 +134,11 @@ Configure your IDE to run `igofmt` upon saving a `*.igo` file.
 Pull-Requests are requested for the below deficiencies.
 
 * For `fordefer`: `goto` statements inside a for-loop that jump outside the for-loop is not implemented. Use `github.com/rocketlaunchr/igo/stack` package manually in such cases.
-* Currently, comments in your igo files are not retained in your go files. Godoc will not see your comments.
-* `igofmt -s` Simplified mode is not implemented. [See here for instructions](https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15).
+* Currently, comments in your igo files are not retained in your go files. Godoc will not see your comments. In the future, the comments for all export functions, constants and variables will be visible.
+* `igofmt -s` Simplified mode is not implemented. [See here for instructions on issuing a PR](https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15).
 * `goimports` equivalent has not been made.
-* Address Operator for integer constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using [go/types](https://github.com/golang/example/tree/master/gotypes) package.
-* Address Operator feature assumes you have not attempted to redefine `true` and `false` to something/anything else (they are not keywords in Go language).
+* Address Operator for constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using [go/types](https://github.com/golang/example/tree/master/gotypes) package.
+* Address Operator feature assumes you have not attempted to redefine `true` and `false` to something/anything else.
 	* Why would you redefine them anyway?
 
 ## Tips & Advice
