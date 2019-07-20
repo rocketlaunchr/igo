@@ -43,7 +43,8 @@ func BuildCmd(cmd *cobra.Command, args []string) {
 
 		// Rename temporary files to *.go files
 		for igoFile, goFile := range tempGeneratedFiles {
-			newFileName := strings.TrimSuffix(igoFile, "igo") + "go"
+			path, filename := filepath.Split(igoFile)
+			newFileName := path + "gen_" + strings.TrimSuffix(filename, "igo") + "go"
 			err := os.Rename(goFile, newFileName)
 			if err != nil {
 				os.Exit(common.Report(err))
