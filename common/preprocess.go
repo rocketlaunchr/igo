@@ -20,7 +20,7 @@ const (
 // - "defer go"
 // - "fordefer" and "fordefer go" (inside for loops)
 // The function returns where the "go" statements are (before temporary removal)
-// The function also returns where the "fordefer" statements and whether they were
+// The function also returns where the "fordefer" statements are and whether they were
 // next to a "go" statement.
 func FindIllegalStatements(sourceFile string, sourceData []byte) ([]int, []Undo, []Undo, error) {
 

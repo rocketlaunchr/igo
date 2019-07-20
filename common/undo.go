@@ -6,8 +6,8 @@ type UndoType int
 
 const (
 	DeferGo    UndoType = 0
-	Fordefer            = 1
-	FordeferGo          = 2
+	Fordefer   UndoType = 1
+	FordeferGo UndoType = 2
 )
 
 // Undo stores information about how to transform the converted code
