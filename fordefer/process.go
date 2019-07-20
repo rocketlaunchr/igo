@@ -43,7 +43,7 @@ func Process(tempFile string) error {
 
 	// If we found a "for" statement then import fordefer package
 	if forFound {
-		insertImport(node)
+		common.InsertImport(node, &[]string{alias}[0], "github.com/rocketlaunchr/igo/stack")
 	}
 
 	err = file.SaveFmtFile(tempFile, fset, node)
@@ -100,13 +100,4 @@ func insertStackAssignment(c *astutil.Cursor) *ast.Ident {
 	})
 
 	return identifier
-}
-
-// insertImport will add the fordefer Stack required for for loops
-func insertImport(node *ast.File) {
-	node.Decls = append([]ast.Decl{&ast.GenDecl{
-		TokPos: node.Package,
-		Tok:    token.IMPORT,
-		Specs:  []ast.Spec{&ast.ImportSpec{Name: &ast.Ident{Name: alias}, Path: &ast.BasicLit{Kind: token.STRING, Value: "\"github.com/rocketlaunchr/igo/stack\""}}},
-	}}, node.Decls...)
 }
