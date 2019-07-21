@@ -12,8 +12,6 @@ The igo project provides various syntactical sugar to make your code simpler and
 3. Defer go
     * Run defer statements in a goroutine
   
-This tool is **experimental** and still at **alpha** stage.
-
 
 ## What is included
 
@@ -134,7 +132,6 @@ Configure your IDE to run `igofmt` upon saving a `*.igo` file.
 Pull-Requests are requested for the below deficiencies.
 
 * For `fordefer`: `goto` statements inside a for-loop that jump outside the for-loop is not implemented. Use `github.com/rocketlaunchr/igo/stack` package manually in such cases.
-* Currently, comments in your igo files are not retained in your go files. Godoc will not see your comments. In the future, the comments for all export functions, constants and variables will be visible.
 * `igofmt -s` Simplified mode is not implemented. [See here for instructions on issuing a PR](https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15).
 * `goimports` equivalent has not been made.
 * Address Operator for constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using [go/types](https://github.com/golang/example/tree/master/gotypes) package.
@@ -151,7 +148,7 @@ Pull-Requests are requested for the below deficiencies.
 
 The license is a modified MIT license. Refer to the `LICENSE` file for more details.
 
-**© 2018 PJ Engineering and Business Solutions Pty. Ltd.**
+**© 2018-19 PJ Engineering and Business Solutions Pty. Ltd.**
 
 ### Final Notes
 
