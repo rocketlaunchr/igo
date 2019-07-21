@@ -12,8 +12,8 @@ type state int
 
 const (
 	initial       state = 0
-	deferFound          = 1
-	fordeferFound       = 2
+	deferFound    state = 1
+	fordeferFound state = 2
 )
 
 // FindIllegalStatements will search for these illegal statements:
@@ -22,7 +22,12 @@ const (
 // The function returns where the "go" statements are (before temporary removal)
 // The function also returns where the "fordefer" statements are and whether they were
 // next to a "go" statement.
-func FindIllegalStatements(sourceFile string, sourceData []byte) ([]int, []Undo, []Undo, error) {
+func FindIllegalStatements(sourceFile string, sourceData []byte) (_ []int, _ []Undo, _ []Undo, rErr error) {
+	defer func() {
+		if err := recover(); err != nil {
+			rErr = err.(error)
+		}
+	}()
 
 	goPos := []int{}
 
@@ -36,7 +41,9 @@ func FindIllegalStatements(sourceFile string, sourceData []byte) ([]int, []Undo,
 
 	f := fs.AddFile(sourceFile, fs.Base(), len(sourceData))
 	var s scanner.Scanner
-	s.Init(f, sourceData, nil, 0)
+	s.Init(f, sourceData, func(pos token.Position, msg string) {
+		panic(fmt.Errorf("%v %s", pos, msg))
+	}, 0)
 
 	var state state
 	var fordeferPos *int // When a fordefer is found, we record it's position

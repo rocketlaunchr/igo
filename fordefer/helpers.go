@@ -11,7 +11,7 @@ type fordefer int
 const (
 	other       fordefer = 0
 	fordeferStd fordefer = 1
-	fordeferGo           = 2
+	fordeferGo  fordefer = 2
 )
 
 // isExprStmtAForDefer will return if we found a "fordefer" or "fordefer go"
@@ -68,7 +68,7 @@ func morphFordefer(forID string, fordeferStmt *ast.ExprStmt, nextStmt ast.Stmt, 
 	// Modify current node
 	fordeferStmt.X.(*ast.CallExpr).Fun.(*ast.SelectorExpr).X.(*ast.Ident).Name = forID // identifier for for loop's stack
 	fordeferStmt.X.(*ast.CallExpr).Fun.(*ast.SelectorExpr).Sel.Name = "Add"
-	fordeferStmt.X.(*ast.CallExpr).Args = append(fordeferStmt.X.(*ast.CallExpr).Args,
+	fordeferStmt.X.(*ast.CallExpr).Args = []ast.Expr{
 		&ast.Ident{
 			Name: goroutineStr,
 		},
@@ -83,7 +83,7 @@ func morphFordefer(forID string, fordeferStmt *ast.ExprStmt, nextStmt ast.Stmt, 
 				List: []ast.Stmt{nextStmt},
 			},
 		},
-	)
+	}
 
 	// Remove next node
 	parentNode.(*ast.BlockStmt).List = append(parentNode.(*ast.BlockStmt).List[:nextStmtIdx], parentNode.(*ast.BlockStmt).List[nextStmtIdx+1:]...)

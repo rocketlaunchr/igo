@@ -108,7 +108,7 @@ type breakParent int
 
 const (
 	forStmt    breakParent = 0
-	notForStmt             = 1
+	notForStmt breakParent = 1
 )
 
 func (l *breakParentStack) current() breakParent {
