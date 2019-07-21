@@ -65,11 +65,12 @@ type state int
 
 const (
 	initial    state = 0
-	foFound          = 1
-	dotFound         = 2
-	dfFound          = 3
-	lBrakFound       = 4
-	rBrakFound       = 5
+	foFound    state = 1
+	dotFound   state = 2
+	d5Found    state = 3
+	lBrakFound state = 4
+	xFound     state = 5
+	rBrakFound state = 6
 )
 
 func processFile(path string) error {
@@ -114,7 +115,10 @@ func processFile(path string) error {
 	var s scanner.Scanner
 	s.Init(_f, contents, nil, scanner.ScanComments)
 
-	var state state
+	var (
+		state            state
+		fordeferStartPos *int
+	)
 
 	for {
 		pos, tok, l := s.Scan()
@@ -124,6 +128,7 @@ func processFile(path string) error {
 
 		if tok == token.DEFER {
 			state = initial
+			fordeferStartPos = nil
 
 			defersFound++
 
@@ -135,16 +140,20 @@ func processFile(path string) error {
 			}
 		} else if tok == token.IDENT && l == "f0" {
 			state = foFound
+			fordeferStartPos = &[]int{int(pos)}[0]
 		} else if tok == token.PERIOD && state == foFound {
 			state = dotFound
 		} else if tok == token.IDENT && l == "d5" && state == dotFound {
-			state = dfFound
-		} else if tok == token.LPAREN && state == dfFound {
+			state = d5Found
+		} else if tok == token.LPAREN && state == d5Found {
 			state = lBrakFound
+		} else if tok == token.IDENT && stringContainsOnlyx(l) && state == lBrakFound {
+			state = xFound
+		} else if tok == token.RPAREN && state == xFound {
+			state = rBrakFound
 		} else if tok == token.RPAREN && state == lBrakFound {
 			state = rBrakFound
 		} else if tok == token.SEMICOLON && state == rBrakFound {
-			state = initial
 
 			fordefersFound++
 
@@ -152,17 +161,21 @@ func processFile(path string) error {
 				if undoFordeferList[0].Pos == fordefersFound {
 					if undoFordeferList[0].UndoType == common.Fordefer {
 						// fordefer
-						addFordefer(&contents, false, int(pos))
+						addFordefer(&contents, false, int(*fordeferStartPos), int(pos))
 						undoFordeferList = append(undoFordeferList[:0], undoFordeferList[1:]...)
 					} else if undoFordeferList[0].UndoType == common.FordeferGo {
 						// fordefer go
-						addFordefer(&contents, true, int(pos))
+						addFordefer(&contents, true, int(*fordeferStartPos), int(pos))
 						undoFordeferList = append(undoFordeferList[:0], undoFordeferList[1:]...)
 					}
 				}
 			}
+
+			state = initial
+			fordeferStartPos = nil
 		} else {
 			state = initial
+			fordeferStartPos = nil
 		}
 	}
 
@@ -186,25 +199,28 @@ func addGoStmt(data *[]byte, pos int) {
 }
 
 // addFordefer inserts "fordefer" and "fordefer go" statements
-// after encountering a "f0.d5();" statement.
-func addFordefer(data *[]byte, goStmt bool, pos int) {
+// after encountering a "f0.d5();" (fordefer) or
+// "f0.d5(xxxx);" (fordefer go) statement.
+func addFordefer(data *[]byte, goStmt bool, startPos, endPos int) {
+
+	// Make text from (startPos-1) to (endPos-1) blank
+	for i := (startPos - 1); i < endPos; i++ {
+		(*data)[i] = []byte(" ")[0]
+	}
+
 	str := "fordefer "
 	goStr := "go "
 
-	pos = pos - 8
-
-	// Replace f0.d5(); with fordefer
-	for i := 0; i < len(str); i++ {
-		(*data)[pos+i] = str[i]
-	}
-
-	pos = pos + len(str)
+	finalStr := str
 	if goStmt {
-		for i := 0; i < len(goStr); i++ {
-			insert(data, pos+i, goStr[i])
-		}
-		pos = pos + len(goStr)
+		finalStr = finalStr + goStr
 	}
+
+	for i := 0; i < len(finalStr); i++ {
+		(*data)[startPos+i-1] = finalStr[i]
+	}
+
+	pos := (startPos - 1) + len(finalStr)
 
 	// Remove indenting before next statement on next line
 	for {
@@ -212,7 +228,7 @@ func addFordefer(data *[]byte, goStmt bool, pos int) {
 			break
 		}
 
-		if charFound := (*data)[pos]; charFound == []byte("	")[0] {
+		if charFound := (*data)[pos]; charFound == []byte(" ")[0] || charFound == []byte("	")[0] {
 			(*data) = append((*data)[:pos], (*data)[pos+1:]...)
 			continue
 		} else {
@@ -227,4 +243,14 @@ func insert(data *[]byte, idx int, char byte) {
 	*data = append(*data, 0)
 	copy((*data)[idx+1:], (*data)[idx:])
 	(*data)[idx] = char
+}
+
+// stringContainsOnlyx returns true if a string contains only the run 'x'
+func stringContainsOnlyx(l string) bool {
+	for _, runeVal := range l {
+		if runeVal != 'x' {
+			return false
+		}
+	}
+	return true
 }

@@ -112,7 +112,7 @@ func replaceFordeferStmt(data []byte, start int, gap int) {
 	data[start+3] = []byte("5")[0]
 	data[start+4] = []byte("(")[0]
 	for i := 0; i < gap; i++ {
-		data[start+5+i] = []byte(" ")[0]
+		data[start+5+i] = []byte("x")[0]
 	}
 	data[start+5+gap] = []byte(")")[0]
 	data[start+6+gap] = []byte(";")[0]
