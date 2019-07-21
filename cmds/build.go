@@ -81,6 +81,12 @@ func processFile(sourceFile string) error {
 		return err
 	}
 
+	// Cleanup nuisance comments (inside functions which interfere with modifying tree)
+	err = common.RemoveComments(tempFileName)
+	if err != nil {
+		return err
+	}
+
 	err = fordefer.Process(tempFileName)
 	if err != nil {
 		return err

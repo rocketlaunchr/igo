@@ -16,8 +16,7 @@ func Process(tempFile string, goPos []int) error {
 
 		fset := token.NewFileSet()
 
-		// Don't parse comments because it interferes with inserting lines above code
-		node, err := parser.ParseFile(fset, tempFile, nil, parser.AllErrors|parser.DeclarationErrors)
+		node, err := parser.ParseFile(fset, tempFile, nil, parser.AllErrors|parser.ParseComments|parser.DeclarationErrors)
 		if err != nil {
 			return err
 		}
