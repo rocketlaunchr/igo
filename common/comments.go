@@ -30,8 +30,6 @@ func RemoveComments(tempFile string) error {
 	// remove all comments that fall in this range
 	removeCommentsList := []removeRange{}
 
-	// cmap := ast.NewCommentMap(fset, node, node.Comments)
-
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch n := n.(type) {
 		case *ast.FuncDecl:

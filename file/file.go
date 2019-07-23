@@ -58,3 +58,17 @@ func SaveFmtFile(fileName string, fset *token.FileSet, node interface{}) error {
 
 	return UpdateFile(fileName, buf.Bytes())
 }
+
+func PrependFile(fileName string, header string) error {
+	b, err := ReadFile(fileName)
+	if err != nil {
+		return err
+	}
+
+	err = UpdateFile(fileName, append([]byte(header), b...))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/rocketlaunchr/igo/cmds"
+	"github.com/rocketlaunchr/igo/config"
 )
 
 // tempGeneratedFiles maps the actual source file to the temporary generated file
@@ -28,7 +29,7 @@ func main() {
 		Use:   "version",
 		Short: "Version prints the igo version",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("igo version: 0.0.1")
+			fmt.Println("igo version: " + config.VERSION)
 		},
 	}
 

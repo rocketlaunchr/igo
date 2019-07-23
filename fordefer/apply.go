@@ -88,7 +88,7 @@ func pre(forFound *bool) func(c *astutil.Cursor) bool {
 					}
 				}
 			case token.GOTO:
-				// TODO:
+				// TODO: Very complex. See: https://github.com/golang/go/issues/26058
 			}
 		case *ast.LabeledStmt:
 			// Check if child is RangeStmt or ForStmt

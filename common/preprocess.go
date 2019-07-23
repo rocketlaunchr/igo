@@ -42,7 +42,7 @@ func FindIllegalStatements(sourceFile string, sourceData []byte) (_ []int, _ []U
 	f := fs.AddFile(sourceFile, fs.Base(), len(sourceData))
 	var s scanner.Scanner
 	s.Init(f, sourceData, func(pos token.Position, msg string) {
-		panic(fmt.Errorf("%v %s", pos, msg))
+		panic(fmt.Errorf("%v: %s", pos, msg))
 	}, 0)
 
 	var state state
