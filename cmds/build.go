@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/rocketlaunchr/igo/addressable"
+	"github.com/rocketlaunchr/igo/builtin"
 	"github.com/rocketlaunchr/igo/common"
 	"github.com/rocketlaunchr/igo/config"
 	"github.com/rocketlaunchr/igo/defergo"
@@ -108,6 +109,11 @@ func processFile(sourceFile string) error {
 	}
 
 	err = addressable.Process(tempFileName)
+	if err != nil {
+		return err
+	}
+
+	err = builtin.Process(tempFileName, sourceFile)
 	if err != nil {
 		return err
 	}

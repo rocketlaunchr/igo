@@ -11,6 +11,12 @@ The igo project provides various syntactical sugar to make your code simpler and
     * `fordefer` guarantees to run prior to the loop's current iteration exiting.
 3. Defer go
     * Run defer statements in a goroutine
+4. must function
+    * Converts a multi-return value function into a single-return function.
+    * See [#32219](https://github.com/golang/go/issues/32219)
+
+
+**NOTE: igo is pronounced ee-gohr**
   
 
 ## What is included
@@ -107,6 +113,32 @@ mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 
 ```
 
+### Must builtin function
+
+`must` is a "builtin" function that converts a multi-return value function into a single-return function. The function's final return value is expected to be of type `error`. It will panic upon encountering an error.
+
+It is useful in scenarios where you know that no error will actually be returned and you just want to inline the function. Alternatively, you want to catch the error during local development but in production no error is expected.
+
+`must` also accepts an optional second argument of type `func(error) error`.
+
+See [#32219](https://github.com/golang/go/issues/32219)
+
+
+```go
+import "database/sql"
+
+db := must(sql.Open("mysql", "host"))
+
+```
+
+**LIMITATIONS**
+
+* Currently it only works when the function returns 2 return values.
+* It doesn't work when used outside of functions.
+* It works perfectly in simple cases and but _may_ not be what you want when there are multiple `must` in 1 line (It most likely will work perfectly but depends on what you want).
+* A PR would be appreciated by an expert in the `go/types` package to create a truly generics-compatible `must` that resolves the limitations above.
+* Unlike real "builtin" functions, `must` is a reserved keyword.
+
 ## How to use
 
 ### Transpile
@@ -141,6 +173,7 @@ Pull-Requests are requested for the below deficiencies.
 ## Tips & Advice
 
 * Store the `igo` and generated `go` files in your git repository.
+* Configure your IDE to run `igofmt` upon saving a `*.igo` file.
 
 #
 
