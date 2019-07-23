@@ -117,7 +117,7 @@ mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 
 `must` is a "builtin" function that converts a multi-return value function into a single-return function. The function's final return value is expected to be of type `error`. It will panic upon encountering an error.
 
-It is useful in scenarios where you know that no error will actually be returned and you just want to inline the function. Alternatively, you want to catch the error during local development but in production no error is expected.
+It is useful in scenarios where you know that no error will actually be returned and you just want to use the function inline. Alternatively, you may want to catch the error during local development because no error should be produced in production.
 
 `must` also accepts an optional second argument of type `func(error) error`.
 
@@ -133,9 +133,9 @@ db := must(sql.Open("mysql", "host"))
 
 **LIMITATIONS**
 
-* Currently it only works when the function returns 2 return values.
-* It doesn't work when used outside of functions.
-* It works perfectly in simple cases and but _may_ not be what you want when there are multiple `must` in 1 line (It most likely will work perfectly but depends on what you want).
+* Currently, it only works when the function returns **two** return values.
+* It doesn't work when used outside of functions (i.e. package variables).
+* It works perfectly in simple cases. For more complex cases, peruse the generated code.
 * A PR would be appreciated by an expert in the `go/types` package to create a truly generics-compatible `must` that resolves the limitations above.
 * Unlike real "builtin" functions, `must` is a reserved keyword.
 
