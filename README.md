@@ -115,9 +115,9 @@ mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 
 ### Must builtin function
 
-`must` is a "builtin" function that converts a multi-return value function into a single-return function. The function's final return value is expected to be of type `error`. It will panic upon encountering an error.
+`must` is a "builtin" function that converts a multi-return value function (`"fn"`) into a single-return function. `fn's` final return value is expected to be of type `error`. `must` will panic upon encountering an error.
 
-It is useful in scenarios where you know that no error will actually be returned and you just want to use the function inline. Alternatively, you may want to catch the error during local development because no error should be produced in production.
+It is useful in scenarios where you know that no error will actually be returned by `fn` and you just want to use the function inline. Alternatively, you may want to catch the error during local development because no error should be produced in production.
 
 `must` also accepts an optional second argument of type `func(error) error`.
 
@@ -133,10 +133,10 @@ db := must(sql.Open("mysql", "host"))
 
 **LIMITATIONS**
 
-* Currently, it only works when the function returns **two** return values.
-* It doesn't work when used outside of functions (i.e. package variables).
+* Currently, it only works when `fn` returns **two** return values.
+* It doesn't work when used outside of functions (i.e. initializing package variables).
 * It works perfectly in simple cases. For more complex cases, peruse the generated code.
-* A PR would be appreciated by an expert in the `go/types` package to create a truly generics-compatible `must` that resolves the limitations above.
+* A PR would be appreciated by an expert in the `go/types` package. It is possible to create a truly generics-compatible `must` that resolves the limitations above.
 * Unlike real "builtin" functions, `must` is a reserved keyword.
 
 ## How to use

@@ -21,7 +21,7 @@ func current() tracker {
 	return chain[len(chain)-1]
 }
 
-func updateIdx(row, delta int) {
+func updateIdx(delta int) {
 	if len(chain) > 0 {
 		chain[len(chain)-1].idx = chain[len(chain)-1].idx + delta
 	}

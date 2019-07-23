@@ -75,7 +75,7 @@ func replaceMustFunc(c *astutil.Cursor, arg1 *ast.CallExpr, arg2 ast.Expr) {
 		n.Body = append(n.Body[:row], append(insert, n.Body[row:]...)...)
 	}
 
-	updateIdx(row+1, len(insert))
+	updateIdx(len(insert))
 }
 
 func isMustFunc(call *ast.CallExpr) (bool, *ast.CallExpr, ast.Expr) {
