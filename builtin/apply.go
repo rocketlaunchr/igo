@@ -7,6 +7,11 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
+// WARNING: This is a package level variable. All src files must be processed sequentially.
+// var funcComments []*ast.CommentGroup = make([]*ast.CommentGroup, 0)
+
+var funcComments map[*ast.FuncDecl]*ast.CommentGroup = make(map[*ast.FuncDecl]*ast.CommentGroup)
+
 func pre(mustFound *bool) func(c *astutil.Cursor) bool {
 	return func(c *astutil.Cursor) bool {
 
@@ -48,6 +53,10 @@ func pre(mustFound *bool) func(c *astutil.Cursor) bool {
 		}
 
 		switch n := currentNode.(type) {
+		case *ast.FuncDecl:
+			if n.Doc != nil {
+				funcComments[n] = n.Doc
+			}
 		case *ast.CallExpr:
 			ok, arg1, arg2 := isMustFunc(n)
 			if ok {

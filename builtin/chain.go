@@ -9,6 +9,7 @@ type tracker struct {
 	idx int
 }
 
+// WARNING: This is a package level variable. All src files must be processed sequentially.
 var chain []tracker = make([]tracker, 0)
 
 func removeLast() {
