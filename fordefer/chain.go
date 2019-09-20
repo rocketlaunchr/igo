@@ -11,6 +11,7 @@ type forInfo struct {
 	identifier string   // random identifier
 	label      *string  // label above "for" loop
 	parent     *forInfo // parent refers to
+	count      int      // how many fordefers found inside for loop
 }
 
 type forLoop struct {

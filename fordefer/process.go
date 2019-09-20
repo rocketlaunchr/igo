@@ -36,14 +36,26 @@ func Process(tempFile string) error {
 		return err
 	}
 
+	astutil.Apply(node, pre, post)
+
+	idsToRemove := map[string]struct{}{}
 	forFound := false
 
-	astutil.Apply(node, pre(&forFound), post)
+	for _, fi := range lookup {
+		if fi.count == 0 {
+			// Remove stack creation
+			idsToRemove[fi.identifier] = struct{}{}
+		} else {
+			forFound = true
+		}
+	}
 
 	// If we found a "for" statement then import fordefer package
 	if forFound {
 		common.InsertImport(node, &[]string{alias}[0], "github.com/rocketlaunchr/igo/stack")
 	}
+
+	astutil.Apply(node, cleanse(idsToRemove), nil)
 
 	err = file.SaveFmtFile(tempFile, fset, node)
 	if err != nil {
