@@ -35,32 +35,10 @@ func NewStack(lifo bool, capacity ...int) *Stack {
 	}
 }
 
-// TODO: Always insert to end of the stack
-// but loop from either end (more efficient)
-
 // Add inserts a closure to the stack.
 func (s *Stack) Add(goroutine bool, fn interface{}) {
 	s.Lock()
 	defer s.Unlock()
-
-	if s.lifo {
-		s.prepend(goroutine, fn)
-	} else {
-		s.append(goroutine, fn)
-	}
-}
-
-func (s *Stack) prepend(goroutine bool, fn interface{}) {
-
-	tc := tocall{
-		fn:        fn,
-		goroutine: goroutine,
-	}
-
-	s.stack = append([]tocall{tc}, s.stack...)
-}
-
-func (s *Stack) append(goroutine bool, fn interface{}) {
 
 	tc := tocall{
 		fn:        fn,
@@ -76,13 +54,25 @@ func (s *Stack) Unwind() {
 	s.Lock()
 	defer s.Unlock()
 
-	for i := range s.stack {
-		tc := s.stack[i]
-		val := reflect.ValueOf(tc.fn)
-		if tc.goroutine {
-			go val.Call([]reflect.Value{})
-		} else {
-			val.Call([]reflect.Value{})
+	if s.lifo {
+		for i := len(s.stack) - 1; i >= 0; i-- {
+			tc := s.stack[i]
+			val := reflect.ValueOf(tc.fn)
+			if tc.goroutine {
+				go val.Call([]reflect.Value{})
+			} else {
+				val.Call([]reflect.Value{})
+			}
+		}
+	} else {
+		for i := range s.stack {
+			tc := s.stack[i]
+			val := reflect.ValueOf(tc.fn)
+			if tc.goroutine {
+				go val.Call([]reflect.Value{})
+			} else {
+				val.Call([]reflect.Value{})
+			}
 		}
 	}
 
