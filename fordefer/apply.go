@@ -132,6 +132,7 @@ func pre(forFound *bool) func(c *astutil.Cursor) bool {
 				if fs, ok := n.(*ast.ForStmt); ok {
 					fs.Body.List = append(fs.Body.List, &ast.ExprStmt{X: stackUnwind(forID)})
 				}
+			breakParents.add(n)
 
 			}
 		}

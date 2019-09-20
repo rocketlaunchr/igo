@@ -93,7 +93,9 @@ func insertStackAssignment(c *astutil.Cursor) *ast.Ident {
 		},
 	}
 	assignment := &ast.AssignStmt{Lhs: []ast.Expr{identifier}, Rhs: []ast.Expr{newStack}, Tok: token.DEFINE}
+	// <ident> := fordefer.NewStack()
 	c.InsertBefore(assignment)
+	// defer <ident>.Unwind()
 	c.InsertBefore(&ast.DeferStmt{
 		Call: stackUnwind(identifier),
 	})
