@@ -1,28 +1,27 @@
-Improved Go (igo)
-===============
+# Improved Go (igo)
 
 Everyone knows that Go is a very verbose language. It takes numerous lines of code to do what a few lines of code can do in other languages. This is a deliberate design decision by the Go Authors.
 
 The igo project provides various syntactical sugar to make your code simpler and easier to read. It works by allowing you to program in `*.igo` files with the fancy new syntax. You then run `igo build` to transpile your `igo` files to standard `go` files which you can then build as per normal.
 
 1. Address Operator (&)
-    * Constants and Functions
+    - Constants and Functions
 2. Defers for for-loops
-    * `fordefer` guarantees to run prior to the loop's current iteration exiting.
+    - `fordefer` guarantees to run prior to the loop's current iteration exiting.
 3. Defer go
-    * Run defer statements in a goroutine
+    - Run defer statements in a goroutine
 4. must function
-    * Converts a multi-return value function into a single-return function.
-    * See [#32219](https://github.com/golang/go/issues/32219)
-
+    - Converts a multi-return value function into a single-return function.
+    - See [#32219](https://github.com/golang/go/issues/32219)
 
 **NOTE: igo is pronounced ee-gohr**
-  
+
+⭐ the project to show your appreciation.
 
 ## What is included
 
-* igofmt (auto format code)
-* igo transpiler (generate standard go code)
+-   igofmt (auto format code)
+-   igo transpiler (generate standard go code)
 
 ## Installation
 
@@ -32,7 +31,7 @@ The igo project provides various syntactical sugar to make your code simpler and
 go get -u github.com/rocketlaunchr/igo
 ```
 
-Use `go install` to install the executable. 
+Use `go install` to install the executable.
 
 **Formatter**
 
@@ -50,14 +49,13 @@ Most professional front-end developers are fed up with standard JavaScript. They
 
 The Address Operator allows you to use more visually pleasing syntax. There is no need for a temporary variable. It can be used with `string`, `bool`, `int`, `float64` and function calls where the function returns 1 return value.
 
-
 ```go
 
 func main() {
 
 	message := &"igo is so convenient"
 	display(message)
-   
+
 	display(&`inline string`)
 
 	display(&defaultMessage())
@@ -96,7 +94,6 @@ for {
 
 ```
 
-
 ### Defer go
 
 This feature makes Go's language syntax more internally consistent. There is no reason why `defer` and `go` should not work together.
@@ -123,7 +120,6 @@ It is useful in scenarios where you know that no error will actually be returned
 
 See [#32219](https://github.com/golang/go/issues/32219)
 
-
 ```go
 import "database/sql"
 
@@ -133,11 +129,11 @@ db := must(sql.Open("mysql", "host"))
 
 **LIMITATIONS**
 
-* Currently, it only works when `fn` returns **two** return values.
-* It doesn't work when used outside of functions (i.e. initializing package variables).
-* It works perfectly in simple cases. For more complex cases, peruse the generated code.
-* A PR would be appreciated by an expert in the `go/types` package. It is possible to create a truly generics-compatible `must` that resolves the limitations above.
-* Unlike real "builtin" functions, `must` is a reserved keyword.
+-   Currently, it only works when `fn` returns **two** return values.
+-   It doesn't work when used outside of functions (i.e. initializing package variables).
+-   It works perfectly in simple cases. For more complex cases, peruse the generated code.
+-   A PR would be appreciated by an expert in the `go/types` package. It is possible to create a truly generics-compatible `must` that resolves the limitations above.
+-   Unlike real "builtin" functions, `must` is a reserved keyword.
 
 ## How to use
 
@@ -163,17 +159,16 @@ Configure your IDE to run `igofmt` upon saving a `*.igo` file.
 
 Pull-Requests are requested for the below deficiencies.
 
-* For `fordefer`: `goto` statements inside a for-loop that jump outside the for-loop is not implemented. Use `github.com/rocketlaunchr/igo/stack` package manually in such cases.
-* `igofmt -s` Simplified mode is not implemented. [See here for instructions on issuing a PR](https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15).
-* `goimports` equivalent has not been made.
-* Address Operator for constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using [go/types](https://github.com/golang/example/tree/master/gotypes) package.
-* Address Operator feature assumes you have not attempted to redefine `true` and `false` to something/anything else.
-	* Why would you redefine them anyway?
+-   For `fordefer`: `goto` statements inside a for-loop that jump outside the for-loop is not implemented. Use `github.com/rocketlaunchr/igo/stack` package manually in such cases.
+-   `igofmt -s` Simplified mode is not implemented. [See here for instructions on issuing a PR](https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15).
+-   `goimports` equivalent has not been made.
+-   Address Operator for constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using [go/types](https://github.com/golang/example/tree/master/gotypes) package.
+-   Address Operator feature assumes you have not attempted to redefine `true` and `false` to something/anything else. \* Why would you redefine them anyway?
 
 ## Tips & Advice
 
-* Store the `igo` and generated `go` files in your git repository.
-* Configure your IDE to run `igofmt` upon saving a `*.igo` file.
+-   Store the `igo` and generated `go` files in your git repository.
+-   Configure your IDE to run `igofmt` upon saving a `*.igo` file.
 
 #
 
@@ -186,5 +181,3 @@ The license is a modified MIT license. Refer to the `LICENSE` file for more deta
 ### Final Notes
 
 Feel free to enhance features by issuing pull-requests.
-
-**Star** the project to show your appreciation.
