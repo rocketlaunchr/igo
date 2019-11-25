@@ -1,0 +1,44 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func isPalindrome(m *string) (bool, error) {
+    // Defer Go sample code
+    defer go fmt.Println("Palindrome function called!")
+
+	valB := ""
+
+	if m == nil {
+		return false, errors.New("no valid string parameter passed in")
+	}
+	valA := *m
+	for i := len(valA) - 1; i >= 0; i-- {
+		valB += string(valA[i])
+	}
+	return valA == valB, nil
+
+}
+
+func main() {
+
+	// Address Operator sample code
+    words := []*string{&"civic", &`relation`}
+
+    for _, word := range words {
+
+        // Must sample code
+        valid := must(isPalindrome(word))
+        if valid {
+            fmt.Printf("%s is a valid palindrome.\n", *word)
+        } else {
+            fmt.Printf("%s is not a valid palindrome.\n", *word)
+        }
+
+        // Fordefer sample code
+        fordefer fmt.Printf("done processing word '%s'\n", *word)
+    }
+
+}
