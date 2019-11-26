@@ -1,14 +1,14 @@
 package main
 
 import (
-	"bytes"
-	"errors"
 	"fmt"
-	"github.com/rocketlaunchr/igo/cmds"
-	"github.com/spf13/cobra"
 	"io"
 	"os"
+	"regexp"
 	"testing"
+
+	"github.com/rocketlaunchr/igo/cmds"
+	"github.com/spf13/cobra"
 )
 
 var buildCmd = &cobra.Command{
@@ -19,27 +19,26 @@ var buildCmd = &cobra.Command{
 
 const chunkSize = 64000
 
-func fileCompare(file1, file2 string) (bool, error) {
-	// Check file size ...
+func fileCompare(expected, generated string) (bool, error) {
 
-	f1, err := os.Open(file1)
+	exp, err := os.Open(expected)
 	if err != nil {
 		return false, err
 	}
-	defer f1.Close()
+	defer exp.Close()
 
-	f2, err := os.Open(file2)
+	gen, err := os.Open(generated)
 	if err != nil {
 		return false, err
 	}
-	defer f2.Close()
+	defer gen.Close()
 
 	for {
-		b1 := make([]byte, chunkSize)
-		_, err1 := f1.Read(b1)
+		expByte := make([]byte, chunkSize)
+		_, err1 := exp.Read(expByte)
 
-		b2 := make([]byte, chunkSize)
-		_, err2 := f2.Read(b2)
+		genByte := make([]byte, chunkSize)
+		_, err2 := gen.Read(genByte)
 
 		if err1 != nil || err2 != nil {
 			if err1 == io.EOF && err2 == io.EOF { // end of both files reached
@@ -47,17 +46,24 @@ func fileCompare(file1, file2 string) (bool, error) {
 			} else if err1 == io.EOF || err2 == io.EOF {
 				return false, nil
 			} else {
-				return false, errors.New(fmt.Sprintf("Errors encountered from the two files.\nFile1:\n%s\nFile2:\n%s\n", err1, err2))
+				return false, fmt.Errorf("errors encountered from the two files, file1: %s file2: %s", err1, err2)
 			}
 		}
 
-		if !bytes.Equal(b1, b2) {
+		// Comparing files using regexp patterns from expected_code file
+
+		matched, err := regexp.MatchString(string(expByte), string(genByte))
+		if err != nil {
+			return false, err
+		}
+		if !matched {
 			return false, nil
 		}
+
 	}
 }
 
-func TestIgo(t *testing.T) {
+func TestIgoBuild(t *testing.T) {
 	igoFile := "./test_files/test_sample.igo"
 	genFile := "./test_files/gen_test_sample.go"
 	expCode := "./test_files/expected.go"
@@ -72,7 +78,7 @@ func TestIgo(t *testing.T) {
 	}
 	t.Log("Done Comparing files.\n")
 	if !confirm {
-		t.Errorf("Generated Code is not same with expected code.")
+		t.Error("Generated Code is not same with expected code.")
 	}
 
 	// delete generated file
@@ -80,6 +86,6 @@ func TestIgo(t *testing.T) {
 	if err := os.Remove(genFile); err != nil {
 		t.Errorf("Test failed with error:%s\n", err)
 	}
-	t.Log("deleted.\n")
+	t.Log("generated file deleted.\n")
 
 }
