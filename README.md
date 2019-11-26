@@ -1,4 +1,4 @@
-# Improved Go (igo)
+# Improved Go (igo) [![GoCover](https://gocover.io/_badge/github.com/rocketlaunchr/igo)](https://gocover.io/github.com/rocketlaunchr/igo)
 
 Everyone knows that Go is a very verbose language. It takes numerous lines of code to do what a few lines of code can do in other languages. This is a deliberate design decision by the Go Authors.
 
