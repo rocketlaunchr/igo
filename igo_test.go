@@ -55,7 +55,7 @@ func fileCompare(expected, generated string) (bool, error) {
 func TestIgoBuild(t *testing.T) {
 	igoFile := "./test_files/test_sample.igo"
 	genFile := "./test_files/gen_test_sample.go"
-	expCode := "./test_files/expected.go"
+	expCode := "./test_files/expected.tgo"
 
 	// Generating go code from igo sample file
 	cmds.BuildCmd(buildCmd, []string{igoFile})
