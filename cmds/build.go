@@ -83,10 +83,10 @@ func processFile(sourceFile string) error {
 		return err
 	}
 
-	path, _ := filepath.Split(sourceFile)
+	path, fn := filepath.Split(sourceFile)
 
 	// Create a temporary file after preprocessing
-	tempFileName, err := file.CreateTempFile(path, b)
+	tempFileName, err := file.CreateTempFile(path, fn, b)
 	if err != nil {
 		return err
 	}

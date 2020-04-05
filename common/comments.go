@@ -33,9 +33,13 @@ func RemoveComments(tempFile string) error {
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch n := n.(type) {
 		case *ast.FuncDecl:
-			removeCommentsList = append(removeCommentsList, removeRange{Lbrace: n.Body.Lbrace, Rbrace: n.Body.Rbrace})
+			if n.Body != nil {
+				removeCommentsList = append(removeCommentsList, removeRange{Lbrace: n.Body.Lbrace, Rbrace: n.Body.Rbrace})
+			}
 		case *ast.FuncLit:
-			removeCommentsList = append(removeCommentsList, removeRange{Lbrace: n.Body.Lbrace, Rbrace: n.Body.Rbrace})
+			if n.Body != nil {
+				removeCommentsList = append(removeCommentsList, removeRange{Lbrace: n.Body.Lbrace, Rbrace: n.Body.Rbrace})
+			}
 		}
 		return true
 	})

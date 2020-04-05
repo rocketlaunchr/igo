@@ -19,10 +19,10 @@ func ReadFile(sourceFile string) ([]byte, error) {
 
 // CreateTempFile creates a copy of the source file and
 // returns the new destination file name.
-func CreateTempFile(basePath string, sourceBytes []byte) (string, error) {
+func CreateTempFile(basePath, fn string, sourceBytes []byte) (string, error) {
 
 	// Determine file's md5 hash
-	destinationFile := basePath + fmt.Sprintf("i%s.go", md5OfData(sourceBytes))
+	destinationFile := basePath + fmt.Sprintf("%s_%s.go", fn, md5OfData(sourceBytes))
 
 	// Copy source file to destination file
 	err := ioutil.WriteFile(destinationFile, sourceBytes, 0644)
