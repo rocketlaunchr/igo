@@ -112,7 +112,7 @@ mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 
 ### Must builtin function
 
-`must` is a "builtin" function that converts a multi-return value function (`"fn"`) into a single-return function. `fn's` final return value is expected to be of type `error`. `must` will panic upon encountering an error.
+`must` is a "builtin" function that converts a multi-return value function (`"fn"`) into a single-return value function. `fn's` final return value is expected to be of type `error`. `must` will panic upon `fn` returning an error.
 
 It is useful in scenarios where you know that no error will actually be returned by `fn` and you just want to use the function inline. Alternatively, you may want to catch the error during local development because no error should be produced in production.
 
