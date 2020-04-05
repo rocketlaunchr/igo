@@ -176,7 +176,7 @@ Pull-Requests are requested for the below deficiencies.
 
 The license is a modified MIT license. Refer to the `LICENSE` file for more details.
 
-**© 2018-19 PJ Engineering and Business Solutions Pty. Ltd.**
+**© 2018-20 PJ Engineering and Business Solutions Pty. Ltd.**
 
 ### Final Notes
 
