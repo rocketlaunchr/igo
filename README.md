@@ -177,7 +177,6 @@ Configure your IDE to run `igofmt` upon saving a `*.igo` file.
 Pull-Requests are requested for the below deficiencies.
 
 -   For `fordefer`: `goto` statements inside a for-loop that jump outside the for-loop is not implemented. Use `github.com/rocketlaunchr/igo/stack` package manually in such cases.
--   `igofmt -s` Simplified mode is not implemented. [See here for instructions on issuing a PR](https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15).
 -   `goimports` equivalent has not been made.
 -   Address Operator for constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using [go/types](https://github.com/golang/example/tree/master/gotypes) package.
 -   Address Operator feature assumes you have not attempted to redefine `true` and `false` to something/anything else.
