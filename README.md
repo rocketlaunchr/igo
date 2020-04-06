@@ -1,4 +1,6 @@
-# Improved Go (igo) [![GoCover](https://gocover.io/_badge/github.com/rocketlaunchr/igo)](https://gocover.io/github.com/rocketlaunchr/igo)
+# Improved Go (igo) [![GoDoc](http://godoc.org/github.com/rocketlaunchr/igo/stack?status.svg)](https://godoc.org/github.com/rocketlaunchr/igo/stack)
+
+
 
 Everyone knows that Go is a very verbose language. It takes numerous lines of code to do what a few lines of code can do in other languages. This is a deliberate design decision by the Go Authors.
 
@@ -154,6 +156,7 @@ igofmt [-s] [igo files...]
 ```
 
 Configure your IDE to run `igofmt` upon saving a `*.igo` file.
+`-s` will attempt to simplify the code by running `gofmt -s`.
 
 ## Design Decisions and Limitations
 
