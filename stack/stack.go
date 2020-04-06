@@ -12,7 +12,7 @@ type tocall struct {
 	goroutine bool // Run in goroutine or not
 }
 
-// Stack is used to stores closures in order.
+// Stack is used to store closures in order.
 type Stack struct {
 	lifo bool
 	sync.Mutex
