@@ -15,6 +15,7 @@ The igo project provides various syntactical sugar to make your code simpler and
 4. must function
     - Converts a multi-return value function into a single-return function.
     - See [#32219](https://github.com/golang/go/issues/32219)
+5. Negative slice indices
 
 **NOTE: igo is pronounced ee-gohr**
 
@@ -137,6 +138,19 @@ db := must(sql.Open("mysql", "host"))
 -   A PR would be appreciated by an expert in the `go/types` package. It is possible to create a truly generics-compatible `must` that resolves the limitations above.
 -   Unlike real "builtin" functions, `must` is a reserved keyword.
 
+### Negative slice indices
+
+You can use negative indices to refer to items in a slice starting from the back. It only works with constants and not variables.
+
+```go
+x := []int{0, 1, 2, 3, 4}
+
+x[-3] // x[len(x)-3]
+
+x[-3:-1] // x[len(x)-3:len(x)-1]
+
+```
+
 ## How to use
 
 ### Transpile
@@ -166,7 +180,7 @@ Pull-Requests are requested for the below deficiencies.
 -   `igofmt -s` Simplified mode is not implemented. [See here for instructions on issuing a PR](https://github.com/golang/go/blob/master/src/cmd/gofmt/simplify.go#L15).
 -   `goimports` equivalent has not been made.
 -   Address Operator for constants currently only supports `string`, `bool`, `float64` and `int`. The other int types are not supported. This can be fixed by using [go/types](https://github.com/golang/example/tree/master/gotypes) package.
--   Address Operator feature assumes you have not attempted to redefine `true` and `false` to something/anything else. \* Why would you redefine them anyway?
+-   Address Operator feature assumes you have not attempted to redefine `true` and `false` to something/anything else.
 
 ## Tips & Advice
 
