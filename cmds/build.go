@@ -17,6 +17,7 @@ import (
 	"github.com/rocketlaunchr/igo/defergo"
 	"github.com/rocketlaunchr/igo/file"
 	"github.com/rocketlaunchr/igo/fordefer"
+	"github.com/rocketlaunchr/igo/negative"
 )
 
 // tempGeneratedFiles maps the actual source file to the temporary generated file
@@ -110,6 +111,11 @@ func processFile(sourceFile string) error {
 	}
 
 	err = addressable.Process(tempFileName)
+	if err != nil {
+		return err
+	}
+
+	err = negative.Process(tempFileName)
 	if err != nil {
 		return err
 	}
