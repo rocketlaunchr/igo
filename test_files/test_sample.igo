@@ -6,8 +6,8 @@ import (
 )
 
 func isPalindrome(m *string) (bool, error) {
-    // Defer Go sample code
-    defer go fmt.Println("Palindrome function called!")
+	// Defer Go sample code
+	defer go fmt.Println("Palindrome function called!")
 
 	valB := ""
 
@@ -25,20 +25,20 @@ func isPalindrome(m *string) (bool, error) {
 func main() {
 
 	// Address Operator sample code
-    words := []*string{&"civic", &`relation`}
+	words := []*string{&"civic", &`relation`}
 
-    for _, word := range words {
+	for _, word := range words {
 
-        // Must sample code
-        valid := must(isPalindrome(word))
-        if valid {
-            fmt.Printf("%s is a valid palindrome.\n", *word)
-        } else {
-            fmt.Printf("%s is not a valid palindrome.\n", *word)
-        }
+		// Must sample code
+		valid := must(isPalindrome(word))
+		if valid {
+			fmt.Printf("%s is a valid palindrome.\n", *word)
+		} else {
+			fmt.Printf("%s is not a valid palindrome.\n", *word)
+		}
 
-        // Fordefer sample code
-        fordefer fmt.Printf("done processing word '%s'\n", *word)
-    }
+		// Fordefer sample code
+		fordefer fmt.Printf("done processing word '%s'\n", *word)
+	}
 
 }
