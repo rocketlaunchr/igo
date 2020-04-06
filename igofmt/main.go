@@ -10,6 +10,7 @@ import (
 	"go/token"
 	"io/ioutil"
 	"os"
+	"os/exec"
 
 	"github.com/rocketlaunchr/igo/common"
 )
@@ -19,7 +20,7 @@ import (
 // https://spf13.com/post/go-fmt/
 
 var (
-	simplifyAST = flag.Bool("s", false, "simplify code (not implemented yet)")
+	simplifyAST = flag.Bool("s", false, "simplify code")
 	exitCode    = 0
 )
 
@@ -51,7 +52,12 @@ func gofmtMain() {
 		}
 
 		for _, path := range files {
-			err := processFile(path)
+			var simplify bool
+			if simplifyAST != nil && *simplifyAST {
+				simplify = true
+			}
+
+			err := processFile(path, simplify)
 			if err != nil {
 				exitCode = common.Report(err)
 				return
@@ -73,26 +79,13 @@ const (
 	rBrakFound state = 6
 )
 
-func processFile(path string) error {
-
-	// Create a temporary file
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
-		return err
-	}
-	defer os.Remove(f.Name()) // Delete out temporary file
+func processFile(path string, simplify bool) error {
 
 	// Copy source contents to temporary file
 	contents, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
 	}
-
-	_, err = f.Write(contents)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
 
 	_, undoDeferGoList, undoFordeferList, err := common.FindIllegalStatements(path, contents)
 	if err != nil {
@@ -103,6 +96,14 @@ func processFile(path string) error {
 	contents, err = format.Source(contents)
 	if err != nil {
 		return err
+	}
+
+	// Run gofmt -s if required
+	if simplify {
+		x, err := runSimplify(contents)
+		if err == nil {
+			contents = x
+		}
 	}
 
 	// For undoing:
@@ -245,7 +246,7 @@ func insert(data *[]byte, idx int, char byte) {
 	(*data)[idx] = char
 }
 
-// stringContainsOnlyx returns true if a string contains only the run 'x'
+// stringContainsOnlyx returns true if a string contains only the rune 'x'
 func stringContainsOnlyx(l string) bool {
 	for _, runeVal := range l {
 		if runeVal != 'x' {
@@ -253,4 +254,38 @@ func stringContainsOnlyx(l string) bool {
 		}
 	}
 	return true
+}
+
+func runSimplify(contents []byte) ([]byte, error) {
+
+	// Create a temporary file
+	f, err := ioutil.TempFile("", "")
+	if err != nil {
+		return nil, err
+	}
+	tempFileName := f.Name()
+	defer os.Remove(tempFileName) // Delete out temporary file
+
+	// Load with contents
+	_, err = f.Write(contents)
+	if err != nil {
+		return nil, err
+	}
+	err = f.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	err = exec.Command("gofmt", "-s", "-w", tempFileName).Run()
+	if err != nil {
+		return nil, err
+	}
+
+	// Reopen file to read
+	b, err := ioutil.ReadFile(tempFileName)
+	if err != nil {
+		return nil, err
+	}
+
+	return b, err
 }
